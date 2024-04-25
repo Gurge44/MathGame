@@ -120,7 +120,14 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         
-        <StackPanel>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Margin="10,10,0,0" Background="Transparent" BorderBrush="Transparent" Click="OpenSettings">
+            <Image Source="settings.svg" Width="50" Height="50"/>
+        </Button>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Margin="70,10,0,0" Background="Transparent" BorderBrush="Transparent" Click="EditTargetNumber">
+            <Image Source="edit.svg" Width="50" Height="50"/>
+        </Button>
+        
+        <StackPanel Grid.Row="0">
             <Label Name="Target" Content="123" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="90" FontWeight="Black"/>
             <Label Name="Current" Content="89" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" Margin="0,-20,0,0"/>
         </StackPanel>

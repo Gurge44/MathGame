@@ -12,4 +12,15 @@
       <None Remove="loading.gif" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="edit.svg" />
+      <Resource Include="edit.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <None Remove="settings.svg" />
+      <Resource Include="settings.svg">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
 </Project>
