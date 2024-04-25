@@ -1,0 +1,174 @@
+﻿<Window x:Class="MathGame.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" MinHeight="720" MinWidth="1280">
+    
+    <Window.Resources>
+        <Style x:Key="Light" TargetType="Button">
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="40"/>
+            <Setter Property="FontWeight" Value="700"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="100"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="50" BorderThickness="3" BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Gray"/>
+                </Trigger>
+                
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="Dark" TargetType="Button">
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Background" Value="Black"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="FontSize" Value="70"/>
+            <Setter Property="FontWeight" Value="900"/>
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="120"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="60" BorderThickness="3" BorderBrush="White">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="Gray"/>
+                </Trigger>
+                
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsFocused" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsDefaulted" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Setter Property="Background" Value="DarkGray"/>
+                </Trigger>
+                
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="LightGray"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+        
+    <Grid Name="MainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        
+        <StackPanel>
+            <Label Name="Target" Content="123" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="90" FontWeight="Black"/>
+            <Label Name="Current" Content="89" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold"/>
+        </StackPanel>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="+" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
+            <Button Grid.Column="2" Content="—" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
+            <Button Grid.Column="3" Content="*" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
+            <Button Grid.Column="4" Content="/" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
+        </Grid>
+        
+        <Grid Grid.Row="4" Name="FirstNumberRow">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="47" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+            <Button Grid.Column="2" Content="13" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+            <Button Grid.Column="3" Content="26" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+        </Grid>
+        
+        <Grid Grid.Row="6" Name="SecondNumberRow">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button Grid.Column="1" Content="78" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+            <Button Grid.Column="2" Content="55" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+            <Button Grid.Column="3" Content="62" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+        </Grid>
+        
+        <Button Grid.Row="7" Name="NewButton" HorizontalAlignment="Right" Width="100" FontSize="30" Margin="0,0,10,10" Background="DodgerBlue" FontWeight="Bold">NEW</Button>
+    </Grid>
+</Window>
