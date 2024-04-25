@@ -27,23 +27,25 @@ public partial class MainWindow : Window
     private async void ResetToDefault()
     {
         Random r = new();
-        TargetNumber = r.Next(1, 1000);
-        Target.Content = TargetNumber;
         CurrentNumber = 0;
         Current.Content = CurrentNumber;
         CurrentOperator = default;
         
-        NewButton.IsEnabled = false;
+        MainGrid.IsEnabled = false;
+        Loading loadingScreen = new();
+        loadingScreen.Show();
         
         Choices = new int[6];
         bool possible = false;
         while (!possible)
         {
-            await Task.Delay(1);
+            await Task.Delay(5);
+            TargetNumber = r.Next(1, 1000);
             for (int i = 0; i < 6; i++)
             {
                 Choices[i] = r.Next(1, 100);
             }
+            if (Choices.Any(n => n == 0 || n == TargetNumber)) continue;
             possible = CheckIfPossible();
         }
 
@@ -53,7 +55,12 @@ public partial class MainWindow : Window
             buttons[i].Content = Choices[i];
         }
         
-        NewButton.IsEnabled = true;
+        loadingScreen.Close();
+        MainGrid.IsEnabled = true;
+        Target.Content = TargetNumber;
+        Target.Foreground = Brushes.Black;
+        Current.Visibility = Visibility.Visible;
+        FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = true);
     }
     
     private bool CheckIfPossible()
@@ -66,18 +73,19 @@ public partial class MainWindow : Window
     {
         if (length == 1) return list.Select(t => new int[] { t });
         return GetPermutations(list, length - 1)
-            .SelectMany(t => list.Where(e => !t.Contains(e)),
-                (t1, t2) => t1.Concat(new int[] { t2 }));
+            .SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Append(t2));
     }
     
     private bool CheckIfPossible(params int[] numbers)
     {
-        if (numbers.Length == 2)
+        if (numbers.Any(n => n == 0)) return false;
+        return numbers.Length switch
         {
-            return numbers[0] + numbers[1] == TargetNumber || numbers[0] - numbers[1] == TargetNumber || numbers[1] - numbers[0] == TargetNumber || numbers[0] * numbers[1] == TargetNumber || numbers[0] / numbers[1] == TargetNumber || numbers[1] / numbers[0] == TargetNumber;
-        }
-
-        return numbers.Select((_, i) => numbers.Where((_, index) => index != i).ToArray()).Any(CheckIfPossible);
+            2 => numbers[0] + numbers[1] == TargetNumber || numbers[0] - numbers[1] == TargetNumber || numbers[1] - numbers[0] == TargetNumber || numbers[0] * numbers[1] == TargetNumber || numbers[0] / numbers[1] == TargetNumber || numbers[1] / numbers[0] == TargetNumber,
+            //3 => CheckIfPossible(numbers[0] + numbers[1], numbers[2]) || CheckIfPossible(numbers[0] - numbers[1], numbers[2]) || CheckIfPossible(numbers[1] - numbers[0], numbers[2]) || CheckIfPossible(numbers[0] * numbers[1], numbers[2]) || CheckIfPossible(numbers[0] / numbers[1], numbers[2]) || CheckIfPossible(numbers[1] / numbers[0], numbers[2]) || CheckIfPossible(numbers[0] + numbers[2], numbers[1]) || CheckIfPossible(numbers[0] - numbers[2], numbers[1]) || CheckIfPossible(numbers[2] - numbers[0], numbers[1]) || CheckIfPossible(numbers[0] * numbers[2], numbers[1]) || CheckIfPossible(numbers[0] / numbers[2], numbers[1]) || CheckIfPossible(numbers[2] / numbers[0], numbers[1]) || CheckIfPossible(numbers[1] + numbers[2], numbers[0]) || CheckIfPossible(numbers[1] - numbers[2], numbers[0]) || CheckIfPossible(numbers[2] - numbers[1], numbers[0]) || CheckIfPossible(numbers[1] * numbers[2], numbers[0]) || CheckIfPossible(numbers[1] / numbers[2], numbers[0]) || CheckIfPossible(numbers[2] / numbers[1], numbers[0]),
+            //4 => CheckIfPossible(numbers[0] + numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] - numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[1] - numbers[0], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] * numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] / numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[1] / numbers[0], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] + numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] - numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[2] - numbers[0], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] * numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] / numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[2] / numbers[0], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] + numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] - numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[3] - numbers[0], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] * numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] / numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[3] / numbers[0], numbers[1], numbers[2]) || CheckIfPossible(numbers[1] + numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] - numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[2] - numbers[1], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] * numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] / numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[2] / numbers[1], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] + numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] - numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[3] - numbers[1], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] * numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] / numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[3] / numbers[1], numbers[0], numbers[2]) || CheckIfPossible(numbers[2] + numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] - numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[3] - numbers[2], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] * numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] / numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[3] / numbers[2], numbers[0], numbers[1]),
+            _ => numbers.Select((_, i) => numbers.Where((_, index) => index != i).ToArray()).Any(CheckIfPossible)
+        };
     }
 
     private void OperatorClick(object sender, RoutedEventArgs e)
@@ -88,15 +96,45 @@ public partial class MainWindow : Window
             "-" => Operator.Subtract,
             "*" => Operator.Multiply,
             "/" => Operator.Divide,
-            _ => throw new InvalidOperationException("Invalid operator")
+            _ => Operator.None
         };
     }
 
-    enum Operator
+    private void NumberClick(object sender, RoutedEventArgs e)
     {
+        int num = int.Parse(((Button)sender).Content.ToString() ?? string.Empty);
+        
+        if (CurrentNumber == 0) CurrentNumber = num;
+        else
+        {
+            CurrentNumber = CurrentOperator switch
+            {
+                Operator.Add => CurrentNumber + num,
+                Operator.Subtract => CurrentNumber - num,
+                Operator.Multiply => CurrentNumber * num,
+                Operator.Divide => CurrentNumber / num,
+                _ => num
+            };
+        }
+
+        if (CurrentNumber == TargetNumber)
+        {
+            Target.Foreground = Brushes.Green;
+            Current.Visibility = Visibility.Hidden;
+            FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = false);
+        }
+        
+        Current.Content = CurrentNumber;
+    }
+
+    private enum Operator
+    {
+        None,
         Add,
         Subtract,
         Multiply,
         Divide
     }
+
+    private void NewGame(object sender, RoutedEventArgs e) => ResetToDefault();
 }

@@ -121,8 +121,8 @@
         </Grid.RowDefinitions>
         
         <StackPanel>
-            <Label Name="Target" Content="123" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="90" FontWeight="Black"/>
-            <Label Name="Current" Content="89" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="Bold"/>
+            <Label Name="Target" Content="123" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="90" FontWeight="Black"/>
+            <Label Name="Current" Content="89" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="30" FontWeight="Bold" Margin="0,-20,0,0"/>
         </StackPanel>
         
         <Grid Grid.Row="2">
@@ -150,9 +150,9 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             
-            <Button Grid.Column="1" Content="47" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
-            <Button Grid.Column="2" Content="13" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
-            <Button Grid.Column="3" Content="26" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+            <Button Grid.Column="1" Content="47" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
+            <Button Grid.Column="2" Content="13" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
+            <Button Grid.Column="3" Content="26" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
         </Grid>
         
         <Grid Grid.Row="6" Name="SecondNumberRow">
@@ -164,11 +164,11 @@
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             
-            <Button Grid.Column="1" Content="78" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
-            <Button Grid.Column="2" Content="55" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
-            <Button Grid.Column="3" Content="62" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}"/>
+            <Button Grid.Column="1" Content="78" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
+            <Button Grid.Column="2" Content="55" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
+            <Button Grid.Column="3" Content="62" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
         </Grid>
         
-        <Button Grid.Row="7" Name="NewButton" HorizontalAlignment="Right" Width="100" FontSize="30" Margin="0,0,10,10" Background="DodgerBlue" FontWeight="Bold">NEW</Button>
+        <Button Grid.Row="7" Name="NewButton" HorizontalAlignment="Right" Width="100" FontSize="30" Margin="0,0,10,10" Background="DodgerBlue" FontWeight="Bold" Click="NewGame">NEW</Button>
     </Grid>
 </Window>
