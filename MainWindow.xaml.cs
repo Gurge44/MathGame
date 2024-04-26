@@ -13,10 +13,10 @@ namespace MathGame
 {
     public partial class MainWindow : Window
     {
-        int TargetNumber;
-        int CurrentNumber;
-        Operator CurrentOperator;
-        int[] Choices = null!;
+        private int TargetNumber;
+        private int CurrentNumber;
+        private Operator CurrentOperator;
+        private int[] Choices = null!;
 
         public MainWindow()
         {
@@ -30,7 +30,8 @@ namespace MathGame
             CurrentNumber = 0;
             Current.Content = CurrentNumber;
             CurrentOperator = default;
-
+            
+            MainGrid.Children.OfType<TextBox>().ToList().ForEach(ExitEditor);
             MainGrid.IsEnabled = false;
             Loading loadingScreen = new();
             loadingScreen.Show();
@@ -140,6 +141,7 @@ namespace MathGame
             }
 
             Current.Content = CurrentNumber;
+            Console.WriteLine(CurrentNumber.ToString());
         }
 
         private enum Operator
@@ -165,9 +167,12 @@ namespace MathGame
             TextBox tb = new()
             {
                 Text = TargetNumber.ToString(),
-                Style = Target.Style
+                Style = Target.Style,
+                FontSize = Target.FontSize,
+                HorizontalAlignment = Target.HorizontalAlignment,
+                VerticalAlignment = Target.VerticalAlignment,
             };
-            tb.TextChanged += (o, args) =>
+            tb.TextChanged += (_, _) =>
             {
                 if (int.TryParse(tb.Text, out int result))
                 {
@@ -179,12 +184,14 @@ namespace MathGame
             
             tb.Focus();
             
-            tb.LostFocus += (o, args) =>
-            {
-                Target.Visibility = Visibility.Visible;
-                MainGrid.Children.Remove(tb);
-                ResetToDefault(setTarget: false);
-            };
+            tb.MouseLeave += (_, _) => { ExitEditor(tb); };
+        }
+
+        private void ExitEditor(UIElement tb)
+        {
+            Target.Visibility = Visibility.Visible;
+            MainGrid.Children.Remove(tb);
+            ResetToDefault(setTarget: false);
         }
     }
 }

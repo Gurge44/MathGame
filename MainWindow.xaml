@@ -64,13 +64,13 @@
             <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontSize" Value="70"/>
             <Setter Property="FontWeight" Value="900"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="Height" Value="120"/>
+            <Setter Property="Width" Value="100"/>
+            <Setter Property="Height" Value="100"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="60" BorderThickness="3" BorderBrush="White">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <Border Background="{TemplateBinding Background}" CornerRadius="50" BorderThickness="3" BorderBrush="White">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Top"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -110,7 +110,7 @@
         
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
@@ -120,11 +120,11 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         
-        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Margin="10,10,0,0" Background="Transparent" BorderBrush="Transparent" Click="OpenSettings">
-            <Image Source="settings.svg" Width="50" Height="50"/>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Background="Transparent" BorderBrush="Transparent" Margin="10,10,0,0" Click="OpenSettings">
+           <Image Source="settings.png" Width="44" Height="44"/>
         </Button>
-        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Margin="70,10,0,0" Background="Transparent" BorderBrush="Transparent" Click="EditTargetNumber">
-            <Image Source="edit.svg" Width="50" Height="50"/>
+        <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Background="Transparent" BorderBrush="Transparent" Margin="70,10,0,0" Click="EditTargetNumber">
+            <Image Source="edit.png" Width="44" Height="44"/>
         </Button>
         
         <StackPanel Grid.Row="0">
@@ -143,7 +143,7 @@
             </Grid.ColumnDefinitions>
             
             <Button Grid.Column="1" Content="+" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
-            <Button Grid.Column="2" Content="—" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
+            <Button Grid.Column="2" Content="-" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
             <Button Grid.Column="3" Content="*" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
             <Button Grid.Column="4" Content="/" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Dark}" Click="OperatorClick"/>
         </Grid>
@@ -176,6 +176,6 @@
             <Button Grid.Column="3" Content="62" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource Light}" Click="NumberClick"/>
         </Grid>
         
-        <Button Grid.Row="7" Name="NewButton" HorizontalAlignment="Right" Width="100" FontSize="30" Margin="0,0,10,10" Background="DodgerBlue" FontWeight="Bold" Click="NewGame">NEW</Button>
+        <Button Grid.Row="7" HorizontalAlignment="Right" Width="100" FontSize="30" Margin="0,0,10,10" Background="DodgerBlue" FontWeight="Bold" Click="NewGame">NEW</Button>
     </Grid>
 </Window>

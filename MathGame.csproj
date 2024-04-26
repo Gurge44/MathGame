@@ -13,13 +13,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="edit.svg" />
-      <Resource Include="edit.svg">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <None Remove="edit.png" />
+      <Resource Include="edit.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
-      <None Remove="settings.svg" />
-      <Resource Include="settings.svg">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <None Remove="settings.png" />
+      <Resource Include="settings.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>
 
