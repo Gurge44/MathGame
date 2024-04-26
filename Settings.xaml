@@ -4,9 +4,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         mc:Ignorable="d"
-        Title="Settings" Height="200" Width="500">
+        Title="Settings" Height="200" Width="500" WindowStartupLocation="CenterScreen" Topmost="True" WindowStyle="None" ResizeMode="NoResize">
     
     <Window.Resources>
+        
+        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="20"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="5" Background="Black" BorderBrush="White" BorderThickness="1"/>
+                <Path x:Name="Arrow" Grid.Column="1" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
+            </Grid>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="Black"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="Black"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter TargetName="Border" Property="Background" Value="Black"/>
+                    <Setter TargetName="Arrow" Property="Fill" Value="Black"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+        
+        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
+            <Border x:Name="PART_ContentHost" Focusable="False" Background="Black"/>
+        </ControlTemplate>
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Foreground" Value="White"/>
@@ -52,33 +79,6 @@
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Foreground" Value="White"/>
         </Style>
-        
-        <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="20"/>
-                </Grid.ColumnDefinitions>
-                <Border x:Name="Border" Grid.ColumnSpan="2" CornerRadius="5" Background="Black" BorderBrush="White" BorderThickness="1"/>
-                <Path x:Name="Arrow" Grid.Column="1" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Data="M 0 0 L 4 4 L 8 0 Z"/>
-            </Grid>
-            <ControlTemplate.Triggers>
-                <Trigger Property="IsMouseOver" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="Black"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="Black"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter TargetName="Border" Property="Background" Value="Black"/>
-                    <Setter TargetName="Arrow" Property="Fill" Value="Black"/>
-                </Trigger>
-            </ControlTemplate.Triggers>
-        </ControlTemplate>
-        
-        <ControlTemplate x:Key="ComboBoxTextBox" TargetType="TextBox">
-            <Border x:Name="PART_ContentHost" Focusable="False" Background="Black"/>
-        </ControlTemplate>
     </Window.Resources>
     
     <Grid Background="Black">
@@ -90,12 +90,20 @@
                     <ColumnDefinition Width="70"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Label Foreground="White" FontSize="15">Maximum number of steps to reach target number</Label>
-                <ComboBox Grid.Column="1" SelectedIndex="0" FontSize="15">
+                <ComboBox Grid.Column="1" Name="DifficultyComboBox" SelectedIndex="0" FontSize="15">
                     <ComboBoxItem Content="2"></ComboBoxItem>
                     <ComboBoxItem Content="3"></ComboBoxItem>
                     <ComboBoxItem Content="4"></ComboBoxItem>
                 </ComboBox>
             </Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,70,0,0">
+                <Border CornerRadius="5" Background="White" BorderThickness="1" BorderBrush="White">
+                    <Button Content="SAVE" Padding="5,1,5,1" FontSize="20" FontWeight="SemiBold" Background="DodgerBlue" Foreground="White" BorderBrush="Transparent" Click="Save" MouseEnter="ButtonMouseEnter" MouseLeave="SaveButtonMouseLeave"/>
+                </Border>
+                <Border CornerRadius="5" Background="White" BorderThickness="1" BorderBrush="White" Margin="10,0,0,0">
+                    <Button Content="CANCEL" Padding="5,1,5,1" FontSize="20" FontWeight="SemiBold" Background="Black" Foreground="White" BorderBrush="Transparent" Click="Cancel" MouseEnter="ButtonMouseEnter" MouseLeave="CancelButtonMouseLeave"/>
+                </Border>
+            </StackPanel>
         </StackPanel>
     </Grid>
 </Window>

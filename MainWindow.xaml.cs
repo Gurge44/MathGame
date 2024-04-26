@@ -11,15 +11,20 @@ using System.Windows.Shapes;
 
 namespace MathGame
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private int TargetNumber;
         private int CurrentNumber;
         private Operator CurrentOperator;
         private int[] Choices = null!;
+        public int Difficulty = 2;
+        private bool AllowEditorExit = true;
+
+        public static MainWindow Instance { get; private set; } = null!;
 
         public MainWindow()
         {
+            Instance = this;
             InitializeComponent();
             ResetToDefault();
         }
@@ -45,7 +50,9 @@ namespace MathGame
                 j++;
                 if (j > 1000 && !setTarget)
                 {
+                    loadingScreen.Close();
                     MessageBox.Show("No possible solution found. Generating new numbers...", "No Solution Found", MessageBoxButton.OK, MessageBoxImage.Error);
+                    loadingScreen.Show();
                     j = 0;
                     setTarget = true;
                 }
@@ -98,8 +105,8 @@ namespace MathGame
             return numbers.Length switch
             {
                 2 => numbers[0] + numbers[1] == TargetNumber || numbers[0] - numbers[1] == TargetNumber || numbers[1] - numbers[0] == TargetNumber || numbers[0] * numbers[1] == TargetNumber || numbers[0] / numbers[1] == TargetNumber || numbers[1] / numbers[0] == TargetNumber,
-                //3 => CheckIfPossible(numbers[0] + numbers[1], numbers[2]) || CheckIfPossible(numbers[0] - numbers[1], numbers[2]) || CheckIfPossible(numbers[1] - numbers[0], numbers[2]) || CheckIfPossible(numbers[0] * numbers[1], numbers[2]) || CheckIfPossible(numbers[0] / numbers[1], numbers[2]) || CheckIfPossible(numbers[1] / numbers[0], numbers[2]) || CheckIfPossible(numbers[0] + numbers[2], numbers[1]) || CheckIfPossible(numbers[0] - numbers[2], numbers[1]) || CheckIfPossible(numbers[2] - numbers[0], numbers[1]) || CheckIfPossible(numbers[0] * numbers[2], numbers[1]) || CheckIfPossible(numbers[0] / numbers[2], numbers[1]) || CheckIfPossible(numbers[2] / numbers[0], numbers[1]) || CheckIfPossible(numbers[1] + numbers[2], numbers[0]) || CheckIfPossible(numbers[1] - numbers[2], numbers[0]) || CheckIfPossible(numbers[2] - numbers[1], numbers[0]) || CheckIfPossible(numbers[1] * numbers[2], numbers[0]) || CheckIfPossible(numbers[1] / numbers[2], numbers[0]) || CheckIfPossible(numbers[2] / numbers[1], numbers[0]),
-                //4 => CheckIfPossible(numbers[0] + numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] - numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[1] - numbers[0], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] * numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] / numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[1] / numbers[0], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] + numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] - numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[2] - numbers[0], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] * numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] / numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[2] / numbers[0], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] + numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] - numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[3] - numbers[0], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] * numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] / numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[3] / numbers[0], numbers[1], numbers[2]) || CheckIfPossible(numbers[1] + numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] - numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[2] - numbers[1], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] * numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] / numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[2] / numbers[1], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] + numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] - numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[3] - numbers[1], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] * numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] / numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[3] / numbers[1], numbers[0], numbers[2]) || CheckIfPossible(numbers[2] + numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] - numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[3] - numbers[2], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] * numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] / numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[3] / numbers[2], numbers[0], numbers[1]),
+                3 when Difficulty >= 3 => CheckIfPossible(numbers[0] + numbers[1], numbers[2]) || CheckIfPossible(numbers[0] - numbers[1], numbers[2]) || CheckIfPossible(numbers[1] - numbers[0], numbers[2]) || CheckIfPossible(numbers[0] * numbers[1], numbers[2]) || CheckIfPossible(numbers[0] / numbers[1], numbers[2]) || CheckIfPossible(numbers[1] / numbers[0], numbers[2]) || CheckIfPossible(numbers[0] + numbers[2], numbers[1]) || CheckIfPossible(numbers[0] - numbers[2], numbers[1]) || CheckIfPossible(numbers[2] - numbers[0], numbers[1]) || CheckIfPossible(numbers[0] * numbers[2], numbers[1]) || CheckIfPossible(numbers[0] / numbers[2], numbers[1]) || CheckIfPossible(numbers[2] / numbers[0], numbers[1]) || CheckIfPossible(numbers[1] + numbers[2], numbers[0]) || CheckIfPossible(numbers[1] - numbers[2], numbers[0]) || CheckIfPossible(numbers[2] - numbers[1], numbers[0]) || CheckIfPossible(numbers[1] * numbers[2], numbers[0]) || CheckIfPossible(numbers[1] / numbers[2], numbers[0]) || CheckIfPossible(numbers[2] / numbers[1], numbers[0]),
+                4 when Difficulty >= 4 => CheckIfPossible(numbers[0] + numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] - numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[1] - numbers[0], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] * numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] / numbers[1], numbers[2], numbers[3]) || CheckIfPossible(numbers[1] / numbers[0], numbers[2], numbers[3]) || CheckIfPossible(numbers[0] + numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] - numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[2] - numbers[0], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] * numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] / numbers[2], numbers[1], numbers[3]) || CheckIfPossible(numbers[2] / numbers[0], numbers[1], numbers[3]) || CheckIfPossible(numbers[0] + numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] - numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[3] - numbers[0], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] * numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[0] / numbers[3], numbers[1], numbers[2]) || CheckIfPossible(numbers[3] / numbers[0], numbers[1], numbers[2]) || CheckIfPossible(numbers[1] + numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] - numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[2] - numbers[1], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] * numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] / numbers[2], numbers[0], numbers[3]) || CheckIfPossible(numbers[2] / numbers[1], numbers[0], numbers[3]) || CheckIfPossible(numbers[1] + numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] - numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[3] - numbers[1], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] * numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[1] / numbers[3], numbers[0], numbers[2]) || CheckIfPossible(numbers[3] / numbers[1], numbers[0], numbers[2]) || CheckIfPossible(numbers[2] + numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] - numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[3] - numbers[2], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] * numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[2] / numbers[3], numbers[0], numbers[1]) || CheckIfPossible(numbers[3] / numbers[2], numbers[0], numbers[1]),
                 _ => numbers.Select((_, i) => numbers.Where((_, index) => index != i).ToArray()).Any(CheckIfPossible)
             };
         }
@@ -157,7 +164,13 @@ namespace MathGame
 
         private void OpenSettings(object sender, RoutedEventArgs e)
         {
-
+            new Settings().Show();
+        }
+        
+        private async void LateTask(Action action, int delay)
+        {
+            await Task.Delay(delay);
+            action();
         }
 
         private void EditTargetNumber(object sender, RoutedEventArgs e)
@@ -174,6 +187,8 @@ namespace MathGame
             };
             tb.TextChanged += (_, _) =>
             {
+                AllowEditorExit = false;
+                LateTask(() => AllowEditorExit = true, 100);
                 if (int.TryParse(tb.Text, out int result))
                 {
                     TargetNumber = result;
@@ -184,11 +199,12 @@ namespace MathGame
             
             tb.Focus();
             
-            tb.MouseLeave += (_, _) => { ExitEditor(tb); };
+            tb.MouseLeave += (_, _) => { if (AllowEditorExit) ExitEditor(tb); };
         }
 
         private void ExitEditor(UIElement tb)
         {
+            Target.Content = TargetNumber;
             Target.Visibility = Visibility.Visible;
             MainGrid.Children.Remove(tb);
             ResetToDefault(setTarget: false);
