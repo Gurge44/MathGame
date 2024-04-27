@@ -48,9 +48,9 @@ namespace MathGame
             while (!possible)
             {
                 j++;
-                if (j > 1000 && !setTarget)
+                if (j > 500 && !setTarget)
                 {
-                    loadingScreen.Close();
+                    loadingScreen.Hide();
                     MessageBox.Show("No possible solution found. Generating new numbers...", "No Solution Found", MessageBoxButton.OK, MessageBoxImage.Error);
                     loadingScreen.Show();
                     j = 0;
@@ -148,7 +148,6 @@ namespace MathGame
             }
 
             Current.Content = CurrentNumber;
-            Console.WriteLine(CurrentNumber.ToString());
         }
 
         private enum Operator
@@ -167,7 +166,7 @@ namespace MathGame
             new Settings().Show();
         }
         
-        private async void LateTask(Action action, int delay)
+        private static async void LateTask(Action action, int delay)
         {
             await Task.Delay(delay);
             action();
