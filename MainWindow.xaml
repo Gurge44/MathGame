@@ -126,6 +126,12 @@
         <Button Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Top" Width="50" Height="50" Background="Transparent" BorderBrush="Transparent" Margin="70,10,0,0" Click="EditTargetNumber">
             <Image Source="edit.png" Width="44" Height="44"/>
         </Button>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Height="50" Background="Transparent" BorderBrush="Transparent" Margin="0,10,10,0" Click="Help">
+            <Image Source="help.png" Width="44" Height="44"/>
+        </Button>
+        <Button Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Top" Width="50" Height="50" Background="Transparent" BorderBrush="Transparent" Margin="0,10,70,0" Click="ResetGame">
+            <Image Source="reset.png" Width="44" Height="44"/>
+        </Button>
         
         <StackPanel Grid.Row="0">
             <Label Name="Target" Content="123" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="90" FontWeight="Black"/>
