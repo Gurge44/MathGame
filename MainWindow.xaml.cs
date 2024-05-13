@@ -1,26 +1,19 @@
-﻿using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MathGame
 {
     public partial class MainWindow
     {
-        private int TargetNumber;
+        private bool AllowEditorExit = true;
+        private int[] Choices = null!;
         private int CurrentNumber;
         private Operator CurrentOperator;
-        private int[] Choices = null!;
         public int Difficulty = 2;
-        private bool AllowEditorExit = true;
-
-        public static MainWindow Instance { get; private set; } = null!;
+        public bool HardMode = false;
+        private int NumbersUsed = 0;
+        private int TargetNumber;
 
         public MainWindow()
         {
@@ -29,13 +22,16 @@ namespace MathGame
             ResetToDefault();
         }
 
+        public static MainWindow Instance { get; private set; } = null!;
+
         private async void ResetToDefault(bool setTarget = true)
         {
             Random r = new();
             CurrentNumber = 0;
             Current.Content = CurrentNumber;
             CurrentOperator = default;
-            
+            NumbersUsed = 0;
+
             MainGrid.Children.OfType<TextBox>().ToList().ForEach(ExitEditor);
             MainGrid.IsEnabled = false;
             Loading loadingScreen = new();
@@ -56,6 +52,7 @@ namespace MathGame
                     j = 0;
                     setTarget = true;
                 }
+
                 if (setTarget) TargetNumber = r.Next(1, 1000);
                 for (int i = 0; i < 6; i++)
                 {
@@ -63,7 +60,7 @@ namespace MathGame
                 }
 
                 if (Choices.Any(n => n == 0 || n == TargetNumber)) continue;
-                
+
                 var checkTask = Task.Run(CheckIfPossible);
                 while (!checkTask.IsCompleted) await Task.Delay(1);
                 possible = checkTask.Result;
@@ -80,7 +77,7 @@ namespace MathGame
 
             Target.Content = TargetNumber;
             Target.Foreground = Brushes.Black;
-            
+
             Current.Visibility = Visibility.Visible;
             FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = true);
         }
@@ -140,23 +137,32 @@ namespace MathGame
                 };
             }
 
+            NumbersUsed++;
+
             if (CurrentNumber == TargetNumber)
             {
                 Target.Foreground = Brushes.Green;
                 Current.Visibility = Visibility.Hidden;
-                FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = false);
+                DisableNumberButtons();
             }
 
             Current.Content = CurrentNumber;
-        }
 
-        private enum Operator
-        {
-            None,
-            Add,
-            Subtract,
-            Multiply,
-            Divide
+            if (NumbersUsed >= Difficulty)
+            {
+                Current.Foreground = Brushes.Red;
+                var beforeBg = ResetButton.Background;
+                ResetButton.Background = Brushes.Yellow;
+                LateTask(() => ResetButton.Background = beforeBg, 2000);
+                DisableNumberButtons();
+            }
+
+            return;
+
+            void DisableNumberButtons()
+            {
+                FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = false);
+            }
         }
 
         private void NewGame(object sender, RoutedEventArgs e) => ResetToDefault();
@@ -165,7 +171,7 @@ namespace MathGame
         {
             new Settings().Show();
         }
-        
+
         private static async void LateTask(Action action, int delay)
         {
             await Task.Delay(delay);
@@ -195,10 +201,13 @@ namespace MathGame
             };
 
             MainGrid.Children.Add(tb);
-            
+
             tb.Focus();
-            
-            tb.MouseLeave += (_, _) => { if (AllowEditorExit) ExitEditor(tb); };
+
+            tb.MouseLeave += (_, _) =>
+            {
+                if (AllowEditorExit) ExitEditor(tb);
+            };
         }
 
         private void ExitEditor(UIElement tb)
@@ -208,16 +217,28 @@ namespace MathGame
             MainGrid.Children.Remove(tb);
             ResetToDefault(setTarget: false);
         }
-        
+
         private void ResetGame(object sender, RoutedEventArgs e)
         {
             CurrentNumber = 0;
             Current.Content = CurrentNumber;
+
+            FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = true);
+            Current.Foreground = Brushes.Black;
         }
-        
+
         private void Help(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Welcome to Math Game! The goal of the game is to reach the target number using the numbers provided. You can add, subtract, multiply, and divide the numbers to reach the target number. You can also change the target number by clicking on the edit icon in the top left. You can set how many steps are required to reach the target number in the settings which you can open by the wheel icon in the top left. To reset your current number to 0, click the reset icon in the top right. To get a new target number and restart, click the NEW button in the bottom right. Good luck!", "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private enum Operator
+        {
+            None,
+            Add,
+            Subtract,
+            Multiply,
+            Divide
         }
     }
 }

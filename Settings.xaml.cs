@@ -11,11 +11,13 @@ namespace MathGame
         {
             InitializeComponent();
             DifficultyComboBox.SelectedIndex = MainWindow.Instance.Difficulty - 2;
+            HardModeCheckBox.IsChecked = MainWindow.Instance.HardMode;
         }
 
         private void Save(object sender, RoutedEventArgs e)
         {
             MainWindow.Instance.Difficulty = DifficultyComboBox.SelectedIndex + 2;
+            MainWindow.Instance.HardMode = HardModeCheckBox.IsChecked ?? false;
             Close();
         }
 
