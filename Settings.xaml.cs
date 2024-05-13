@@ -18,6 +18,12 @@ namespace MathGame
         {
             MainWindow.Instance.Difficulty = DifficultyComboBox.SelectedIndex + 2;
             MainWindow.Instance.HardMode = HardModeCheckBox.IsChecked ?? false;
+            if (MainWindow.Instance.HardMode)
+            {
+                MainWindow.Instance.NumbersUsedLabel.Visibility = Visibility.Visible;
+                MainWindow.Instance.UpdateUsageLabel();
+            }
+
             Close();
         }
 

@@ -10,7 +10,7 @@ namespace MathGame
         private int[] Choices = null!;
         private int CurrentNumber;
         private Operator CurrentOperator;
-        public int Difficulty = 2;
+        public int Difficulty = 4;
         public bool HardMode = false;
         private int NumbersUsed = 0;
         private int TargetNumber;
@@ -31,6 +31,7 @@ namespace MathGame
             Current.Content = CurrentNumber;
             CurrentOperator = default;
             NumbersUsed = 0;
+            NumbersUsedLabel.Visibility = HardMode ? Visibility.Visible : Visibility.Hidden;
 
             MainGrid.Children.OfType<TextBox>().ToList().ForEach(ExitEditor);
             MainGrid.IsEnabled = false;
@@ -80,6 +81,7 @@ namespace MathGame
 
             Current.Visibility = Visibility.Visible;
             FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = true);
+            UpdateUsageLabel();
         }
 
         private async Task<bool> CheckIfPossible()
@@ -138,8 +140,10 @@ namespace MathGame
             }
 
             NumbersUsed++;
+            UpdateUsageLabel();
 
-            if (CurrentNumber == TargetNumber)
+            bool success = CurrentNumber == TargetNumber;
+            if (success)
             {
                 Target.Foreground = Brushes.Green;
                 Current.Visibility = Visibility.Hidden;
@@ -148,7 +152,9 @@ namespace MathGame
 
             Current.Content = CurrentNumber;
 
-            if (NumbersUsed >= Difficulty)
+            if (success) return;
+
+            if (HardMode && NumbersUsed >= Difficulty)
             {
                 Current.Foreground = Brushes.Red;
                 var beforeBg = ResetButton.Background;
@@ -163,6 +169,12 @@ namespace MathGame
             {
                 FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = false);
             }
+        }
+
+        public void UpdateUsageLabel()
+        {
+            if (!HardMode) return;
+            NumbersUsedLabel.Content = $"{NumbersUsed}/{Difficulty}";
         }
 
         private void NewGame(object sender, RoutedEventArgs e) => ResetToDefault();
@@ -220,8 +232,12 @@ namespace MathGame
 
         private void ResetGame(object sender, RoutedEventArgs e)
         {
+            bool done = CurrentNumber == TargetNumber;
             CurrentNumber = 0;
             Current.Content = CurrentNumber;
+            NumbersUsed = 0;
+            UpdateUsageLabel();
+            if (done) return;
 
             FirstNumberRow.Children.OfType<Button>().Concat(SecondNumberRow.Children.OfType<Button>()).ToList().ForEach(b => b.IsEnabled = true);
             Current.Foreground = Brushes.Black;
