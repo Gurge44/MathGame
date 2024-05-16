@@ -245,7 +245,7 @@ namespace MathGame
 
         private void Help(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Welcome to Math Game! The goal of the game is to reach the target number using the numbers provided. You can add, subtract, multiply, and divide the numbers to reach the target number. You can also change the target number by clicking on the edit icon in the top left. You can set how many steps are required to reach the target number in the settings which you can open by the wheel icon in the top left. To reset your current number to 0, click the reset icon in the top right. To get a new target number and restart, click the NEW button in the bottom right. Good luck!", "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Welcome to the Math Game! The goal of the game is to reach the target number using the numbers provided. You can add, subtract, multiply, and divide the numbers to reach the target number. You can also change the target number by clicking on the edit icon in the top left. You can set how many steps are required to reach the target number in the settings which you can open by the wheel icon in the top left. To reset your current number to 0, click the reset icon in the top right. To get a new target number and restart, click the NEW button in the bottom right. Good luck!", "Help", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private enum Operator
